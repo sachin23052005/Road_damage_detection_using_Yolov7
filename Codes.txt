@@ -1,0 +1,31 @@
+!nvidia-smi
+
+!git clone https://github.com/WongKinYiu/yolov7.git
+%cd yolov7
+
+!pip install -r requirements.txt
+
+!python train.py \
+  --weights yolov7.pt \
+  --cfg cfg/training/yolov7.yaml \
+  --data RoadDamage/data.yaml \
+  --epochs 20 \
+  --batch-size 16 \
+  --workers 4 \
+  --img 512 \
+  --device 0
+
+!ls runs/train
+
+!python test.py \
+  --weights runs/train/exp/weights/best.pt \
+  --data RoadDamage/data.yaml \
+  --img 512 \
+  --device 0
+
+!python detect.py \
+  --weights runs/train/exp/weights/best.pt \
+  --source RoadDamage/test/images \
+  --img 512 \
+  --device 0
+
